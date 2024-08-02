@@ -1,0 +1,45 @@
+[package]
+name = "fishtank"
+description = "A simple fishtank simulation"
+version = "0.1.0"
+edition = "2024"
+license = "MIT"
+author = "Arthur Bowers"
+categories = ["game", "command-line-interface"]
+keywords = ["bevy", "rataui", "terminal", "tui", "aquarium"]
+include = ["src/**/*"]
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+bevy = "0.14.0"
+bevy_atmosphere = "0.10.0"
+bevy_hanabi = "0.12.0"
+bevy_ratatui = "0.6.1"
+bevy_ratatui_render = "0.5.2"
+crossterm = "0.27.0"
+rand = "0.8.5"
+rand_chacha = "0.3.1"
+ratatui = "0.27.0"
+
+[lints.clippy]
+too_many_arguments = "allow"
+type_complexity = "allow"
+
+[profile.dev]
+opt-level = 1
+
+[profile.dev.package."*"]
+opt-level = 3
+
+[profile.release]
+codegen-units = 1
+lto = true
+strip = "debuginfo"
+opt-level = 'z'
+
+[profile.release-native]
+inherits = "release"
+
+[patch.crates-io]
+zune-jpeg = { git = "https://github.com/ironpeak/zune-image", rev = "eebb01b72c07aaf8b00200d9d87d4cba6f01651f" }
