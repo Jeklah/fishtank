@@ -30,8 +30,7 @@ fn bubbles_setup_system(mut commands: Commands, mut effects: ResMut<Assets<Effec
     let init_size = SetAttributeModifier {
         attribute: Attribute::SIZE,
         value: writer.lit(0.01).expr(),
-    }
-};
+    };
 
 let init_age = SetAttributeModifier::new(Attribute::AGE, writer.lit(0.),expr());
 
@@ -96,7 +95,7 @@ commands.insert_resource(BubblesEffect(bubbles_effect));
 
 fn gravel_bubbles_mover(
     time: Res<Time>,
-    mut gravel_bubbler: Query<(&mut Transform, With<GravelBubbler>>,
+    mut gravel_bubbler: Query<&mut Transform, With<GravelBubbler>>,
 ) {
         let mut transform = gravel_bubbler.single_mut();
 

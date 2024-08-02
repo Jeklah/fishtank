@@ -2,14 +2,17 @@
 name = "fishtank"
 description = "A simple fishtank simulation"
 version = "0.1.0"
-edition = "2024"
 license = "MIT"
 author = "Arthur Bowers"
 categories = ["game", "command-line-interface"]
 keywords = ["bevy", "rataui", "terminal", "tui", "aquarium"]
-include = ["src/**/*"]
+include = ["/src", "/assets"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[features]
+default = ["wayland"]
+wayland = ["bevy/wayland"]
 
 [dependencies]
 bevy = "0.14.0"
@@ -18,9 +21,11 @@ bevy_hanabi = "0.12.0"
 bevy_ratatui = "0.6.1"
 bevy_ratatui_render = "0.5.2"
 crossterm = "0.27.0"
+flags = "0.1.5"
 rand = "0.8.5"
 rand_chacha = "0.3.1"
 ratatui = "0.27.0"
+wayland-client = "0.31.5"
 
 [lints.clippy]
 too_many_arguments = "allow"
@@ -35,7 +40,7 @@ opt-level = 3
 [profile.release]
 codegen-units = 1
 lto = true
-strip = "debuginfo"
+strip = true 
 opt-level = 'z'
 
 [profile.release-native]
