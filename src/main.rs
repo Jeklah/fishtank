@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use lifecycler::AppPlugin;
+use fishtank::AppPlugin;
 
 fn main() {
     App::new().add_plugin(AppPlugin).run();
