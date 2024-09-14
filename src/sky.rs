@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-yse bevy_atmosphere::{
+use bevy_atmosphere::{
     model::Atmosphere,
     prelude::{AtmosphereMut, Nishita},
 };
@@ -10,9 +10,9 @@ pub(super) fn plugin(app: &mut App) {
         .add_systems(Update, daylight_cycle_system)
         .insert_resource(AtmosphereModel::default())
         .insert_resource(CycleTiimer(Timer::new(
-                    bevy::utils::Duration::from_millis(50),
-                    TimerMode::Repeating,
-                )));
+            bevy::utils::Duration::from_millis(50),
+            TimerMode::Repeating,
+        )));
 }
 
 #[derive(Component)]
@@ -35,9 +35,11 @@ fn daylight_cycle_system(
 
     if timer.finished() {
         let t = time.elapsed_seconds_wrapped() / 24.0;
-        atmosphere.sun_position =Vec3::new(0., t.sin(), t.cos());
+        atmosphere.sun_position = Vec3::new(0., t.sin(), t.cos());
 
-        if let Some((mut light_trans))
+        if let Some((mut light_trans, mut directional)) = query.single_mut().into() {
+            light_trans.rotation = Quat::from_rotation_x(-t);
+            directional.illuminance = t.sin().max(0.0).powf(2.0) * AMBIENT_DAYLIGHT;
+        }
     }
 }
-
