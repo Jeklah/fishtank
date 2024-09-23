@@ -4,7 +4,7 @@ description = "A simple fishtank simulation"
 version = "0.1.0"
 license = "MIT"
 author = "Arthur Bowers"
-categories = ["game", "command-line-interface"]
+categories = ["games", "command-line-interface"]
 keywords = ["bevy", "rataui", "terminal", "tui", "aquarium"]
 include = ["/src", "/assets"]
 
@@ -17,15 +17,13 @@ wayland = ["bevy/wayland"]
 [dependencies]
 bevy = "0.14.0"
 bevy_atmosphere = "0.10.0"
-bevy_hanabi = "0.12.0"
+bevy_hanabi = "=0.12.0"
 bevy_ratatui = "0.6.1"
 bevy_ratatui_render = "0.5.2"
 crossterm = "0.27.0"
-flags = "0.1.5"
 rand = "0.8.5"
 rand_chacha = "0.3.1"
 ratatui = "0.27.0"
-wayland-client = "0.31.5"
 
 [lints.clippy]
 too_many_arguments = "allow"
