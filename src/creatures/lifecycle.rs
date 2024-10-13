@@ -88,3 +88,19 @@ fn age_the_living_system(
         );
     }
 }
+
+fn fish_skeleton_system(
+    time: Res<Time>,
+    mut commands: Commands,
+    mut skeleton_query: Query<(Entity, &mut Transform), With<FishSkeleton>>,
+    mut spawn_event: EventWriter<FishSpawnEvent>,
+) {
+    for (entity, mut transform) in skeleton_query.iter_mut() {
+        transform.translation.y -= time.delta_seconds() / 10.;
+
+        if transform.translation.y < -1.9 {
+            commands.entity(entity).despawn();
+            spawn_event.send(FishSpawnEvent(transform.translation));
+        }
+    }
+}
