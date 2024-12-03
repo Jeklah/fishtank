@@ -1,29 +1,30 @@
 [package]
 name = "fishtank"
 description = "A simple fishtank simulation"
-version = "0.1.0"
-license = "MIT"
+version = "0.2.10"
+edition = "2021"
+license = "MIT OR Apache-2.0 OR CC0-1.0"
 author = "Arthur Bowers"
 categories = ["games", "command-line-interface"]
 keywords = ["bevy", "rataui", "terminal", "tui", "aquarium"]
-include = ["/src", "/assets"]
+# include = ["/src", "/assets"]
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[features]
-default = ["wayland"]
-wayland = ["bevy/wayland"]
+# [features]
+# default = ["wayland"]
+# wayland = ["bevy/wayland"]
 
 [dependencies]
-bevy = "0.14.0"
+bevy = "0.14.2"
 bevy_atmosphere = "0.10.0"
 bevy_hanabi = "=0.12.0"
-bevy_ratatui = "0.6.1"
-bevy_ratatui_render = "0.5.2"
-crossterm = "0.27.0"
+bevy_ratatui = "0.6.3"
+bevy_ratatui_render = "0.5.7"
+crossterm = "0.28.0"
 rand = "0.8.5"
 rand_chacha = "0.3.1"
-ratatui = "0.27.0"
+ratatui = "0.28.1"
 
 [lints.clippy]
 too_many_arguments = "allow"
@@ -46,3 +47,24 @@ inherits = "release"
 
 [patch.crates-io]
 zune-jpeg = { git = "https://github.com/ironpeak/zune-image", rev = "eebb01b72c07aaf8b00200d9d87d4cba6f01651f" }
+
+# Config for 'cargo dist'
+[workspace.metadata.dist]
+# The preferred cargo-dist version to use in CI (Cargo.toml) SemVer syntax)
+cargo-dist-version = "0.22.1"
+# CI backends to support
+ci = "github"
+# The installers to generate for each app
+installers = ["homebrew"]
+# A GitHub repo to push Homebrew formulas to
+tap = "jeklah/homebrew-formulas"
+# Target platforms to build apps for (Rust target-triple syntax)
+targets = ["aarch64-apple-darwin", "x86-64-apple-darwin", "x86_64-unknown-linux-gnu", "x86_64-pc-windows-msvc"]
+# Publish jobs to run in CI
+publish-jobs = ["homebrew"]
+# Which actions to run on pull requests
+pr-run-mode = "plan"
+
+[workspace.metadata.dist.dependencies.apt]
+libasound2-dev = "*"
+libudev-dev = "*"
