@@ -1,7 +1,5 @@
 use std::time::Duration;
 
-use extern crate bevy;
-
 use bevy::{prelude::*, time::common_conditions::on_timer};
 use bevy_hanabi::{
     Attribute, ColorOverLifetimeModifier, EffectAsset, ExprWriter, Gradient, ParticleEffect,
@@ -24,7 +22,6 @@ pub struct BubblesEffect(Handle<EffectAsset>);
 
 #[derive(Component)]
 pub struct GravelBubbler;
-
 
 fn bubbles_setup_system(mut commands: Commands, mut effects: ResMut<Assets<EffectAsset>>) {
     let writer = ExprWriter::new();
@@ -52,21 +49,21 @@ fn bubbles_setup_system(mut commands: Commands, mut effects: ResMut<Assets<Effec
     color_gradient.add_key(0.0, Vec4::new(0.9, 0.9, 1.0, 0.8));
     color_gradient.add_key(0.7, Vec4::new(0.8, 0.8, 1.0, 0.7));
     color_gradient.add_key(1.0, Vec4::new(0.8, 0.8, 1.0, 0.0));
-    
+
     let update_color = ColorOverLifetimeModifier {
         gradient: color_gradient,
     };
-    
+
     let mut size_gradient = Gradient::new();
     size_gradient.add_key(0.0, Vec2::splat(0.05));
     size_gradient.add_key(0.3, Vec2::splat(0.05));
     size_gradient.add_key(1.0, Vec2::splat(0.02));
-    
+
     let update_size = SizeOverLifetimeModifier {
         gradient: size_gradient,
         screen_space_size: false,
     };
-    
+
     let bubbles_effect = effects.add(
         EffectAsset::new(
             vec![32768],
@@ -81,7 +78,7 @@ fn bubbles_setup_system(mut commands: Commands, mut effects: ResMut<Assets<Effec
         .render(update_size.clone())
         .render(update_color.clone()),
     );
-    
+
     commands.spawn((
         GravelBubbler,
         ParticleEffectBundle {
@@ -90,16 +87,15 @@ fn bubbles_setup_system(mut commands: Commands, mut effects: ResMut<Assets<Effec
             ..default()
         },
     ));
-    
-    commands.insert_resource(BubblesEffect(bubbles_effect));
 
+    commands.insert_resource(BubblesEffect(bubbles_effect));
 }
 
 fn gravel_bubbles_mover(
     time: Res<Time>,
     mut gravel_bubbler: Query<&mut Transform, With<GravelBubbler>>,
 ) {
-        let mut transform = gravel_bubbler.single_mut();
+    let mut transform = gravel_bubbler.single_mut();
 
-        transform.translation.x = 1.7 * time.elapsed_seconds().sin();
+    transform.translation.x = 1.7 * time.elapsed_seconds().sin();
 }

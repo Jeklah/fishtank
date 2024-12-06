@@ -4,8 +4,9 @@ use bevy_ratatui::{
     terminal::RatatuiContext,
 };
 use crossterm::event::{KeyCode, KeyEventKind, MouseButton, MouseEventKind};
+use ratatui::layout::Size;
 
-use crate::{camera::DaylightEven, pellets::PelletEvent, Flags};
+use crate::{camera::DaylightEvent, pellets::PelletEvent, Flags};
 
 const DRAGS_PER_EVENT: u32 = 2;
 
@@ -14,18 +15,18 @@ pub(super) fn plugin(app: &mut App) {
         .init_resource::<DragThreshold>();
 }
 
-#[derive(Resource, Defualt, Deref, DerefMut)]
+#[derive(Resource, Default, Deref, DerefMut)]
 pub struct DragThreshold(u32);
 
 fn handle_keyboard_system(
     mut ratatui_events: EventReader<KeyEvent>,
     mut exit: EventWriter<AppExit>,
-    mut flags: ResMutM<Flags>,
+    mut flags: ResMut<Flags>,
     mut daylight_event: EventWriter<DaylightEvent>,
 ) {
     for key_event in ratatui_events.read() {
         match key_event.kind {
-            KeyEventKind::Press | KeyEventKind::Repeast => match key_event.code {
+            KeyEventKind::Press | KeyEventKind::Repeat => match key_event.code {
                 KeyCode::Char('q') => {
                     exit.send_default();
                 }
@@ -46,7 +47,7 @@ fn handle_keyboard_system(
 }
 
 fn handle_mouse_system(
-    ratatui: Res<RatatuiConext>,
+    ratatui: Res<RatatuiContext>,
     mut events: EventReader<MouseEvent>,
     mut pellet_event: EventWriter<PelletEvent>,
     mut drag_threshold: ResMut<DragThreshold>,
@@ -80,7 +81,7 @@ fn handle_mouse_system(
 fn terminal_coords_to_world_transform(
     column: u16,
     row: u16,
-    terminal_size: ratatui::layout::Rect,
+    terminal_size: Size,
     camera: &Transform,
 ) -> Option<Transform> {
     let block_width = terminal_size.width;
@@ -89,7 +90,7 @@ fn terminal_coords_to_world_transform(
     let render_column = column as f32 - block_width.saturating_sub(block_height) as f32 / 2.;
     let render_row = (row as f32 - block_height.saturating_sub(block_width) as f32 / 4.) * 2.;
 
-    let x = render_colum / block_width.min(block_height) as f32 * 2. - 1.;
+    let x = render_column / block_width.min(block_height) as f32 * 2. - 1.;
     let y = render_row / block_height.min(block_width) as f32 * 2. - 1.;
 
     if x.abs() > 0.9 || y > 0.9 {

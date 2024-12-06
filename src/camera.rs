@@ -1,14 +1,14 @@
 use bevy::{core_pipeline::bloom::BloomSettings, prelude::*};
-use bevy_atmosphere::plugin::AtmospherePlugin;
-use bevy_ratatui_render::RatatuiRenderPlugin;
+use bevy_atmosphere::plugin::AtmosphereCamera;
+use bevy_ratatui_render::RatatuiRenderContext;
 
 use crate::{general::play_sfx, Flags};
 
 const LIGHT_INTENSITY_DAYTIME: f32 = 500_000.;
 const LIGHT_INTENSITY_NIGHTTIME: f32 = 500_000.;
 
-const LIGHT_COLOR_DAYTIME: Color = Color::rgb(190.0, 0.5, 1.0);
-const LIGHT_COLOR_NIGHTTIME: Color = Color::rgb(36.0, 0.2, 0.5);
+const LIGHT_COLOR_DAYTIME: Color = Color::rgb(190., 0.5, 1.0);
+const LIGHT_COLOR_NIGHTTIME: Color = Color::rgb(36., 0.2, 0.5);
 
 const LIGHT_TRANSLATION_DAYTIME: Vec3 = Vec3::new(1.7, 2.5, 5.);
 const LIGHT_TRANSLATION_NIGHTTIME: Vec3 = Vec3::new(0., -2.5, 5.);
@@ -51,7 +51,7 @@ fn setup_camera_system(mut commands: Commands, ratatui_render: Res<RatatuiRender
         PointLightBundle {
             transform: Transform::from_translation(LIGHT_TRANSLATION_DAYTIME),
             point_light: PointLight {
-                intensity: LIGHT_TRANSLATION_DAYTIME,
+                intensity: LIGHT_INTENSITY_DAYTIME,
                 color: LIGHT_COLOR_DAYTIME,
                 shadows_enabled: true,
                 ..default()
