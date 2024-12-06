@@ -59,8 +59,51 @@ impl<'a> CreatureOperations for SnailOperations<'a> {
                 .distance(pellet_transform.translation)
                 < 0.1
             {
-
+                if let Some(mut entity) = commands.get_entity(pellet_entity) {
+                    entity.insert(AttemptDespawn);
+                }
             }
+        } else {
+            self.start_seek_point(rng);
         }
+    }
+
+    fn face_right(&mut self) {
+        *self.transform = self.transform.with_rotation(Quat::IDENTITY);
+    }
+
+    fn face_left(&mut self) {
+        *self.transform = self.transform.with_rotation(Quat::from_rotation_y(PI));
+    }
+
+    fn rank_pellet(&mut self, pellet_transform: &Transform) -> f32 {
+        self.transform()
+            .translation
+            .xz()
+            .distance(pellet_transform.translation.xy())
+    }
+
+    fn check_pellet(&mut self, _rank: f32) -> bool {
+        true
+    }
+
+    fn base_speed() -> f32 {
+        0.05
+    }
+
+    fn valid_area() -> (Vec3, Vec3) {
+        (Vec3::new(-1.5, -1.7, -0.4), Vec3::new(1.5, -1.7, 0.4))
+    }
+
+    fn behavior(&mut self) -> &mut CreatureBehavior {
+        self.behavior
+    }
+
+    fn transform(&mut self) -> &mut Transform {
+        self.transform
+    }
+
+    fn valid_point_buffer() -> Vec3 {
+        Vec3::new(0.2, 0., 0.)
     }
 }
